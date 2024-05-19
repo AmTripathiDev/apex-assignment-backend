@@ -2,7 +2,7 @@ const { readData, writeData } = require("../models/data.model");
 
 const createVehicle = (req, res) => {
   const data = readData();
-  console.log("coming here ", req.body)
+  console.log("coming here ", req.body);
   const scenario = data.scenarios.find((s) => s.id === req.body.scenerioId);
   if (scenario) {
     const newVehicle = {
@@ -20,8 +20,10 @@ const createVehicle = (req, res) => {
 const updateVehicle = (req, res) => {
   const data = readData();
   let vehicleUpdated = false;
-  const scenario = data.scenarios.find((s) => s.id === req.body.scenerioId);
-  if (scenario != -1) {
+  const scenario = data.scenarios.find((s) => s.id === req.params.id);
+  console.log(scenario, " scenerio ");
+
+  if (scenario) {
     const newVehicle = {
       id: `veh_${Date.now()}`,
       ...req.body,
@@ -43,7 +45,6 @@ const updatingVehicle = (req, res) => {
   data.scenarios.forEach((scenario) => {
     const index = scenario.vehicles.findIndex((v) => v.id === req.params.id);
     if (index !== -1) {
-        console.log(index , " coming ")
       scenario.vehicles.splice(index, 1);
       scenario.vehicles.push(req.body);
       vehiceupdated = true;
@@ -63,6 +64,8 @@ const deleteVehicle = (req, res) => {
   let vehicleDeleted = false;
   data.scenarios.forEach((scenario) => {
     const index = scenario.vehicles.findIndex((v) => v.id === req.params.id);
+    console.log(index, " index ");
+
     if (index !== -1) {
       scenario.vehicles.splice(index, 1);
       vehicleDeleted = true;
